@@ -33,8 +33,10 @@ abstract class MultiData extends Data {
   def elements: ArrayBuffer[(String, Data)]
 
   override def addTag[T <: SpinalTag](spinalTag: T): this.type = {
-    super.addTag(spinalTag)
-    elements.foreach(_._2.addTag(spinalTag))
+    val addToThis = spinalTag.propagateOnMultiData(this)
+    if (addToThis) {
+      super.addTag(spinalTag)
+    }
     this
   }
 

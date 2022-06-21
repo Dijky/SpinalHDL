@@ -772,6 +772,21 @@ trait SpinalTag {
     that.addTag(this)
     that
   }
+
+  /**
+   * Propagate this tag to the elements of a MultiData
+   *
+   * @return `true` if this tag should be added to the MultiData itself
+   */
+  private[core] final def propagateOnMultiData(that: MultiData): Boolean = propagateOnMultiDataImpl(that)
+
+  /**
+   * Default implementation of propagateOnMultiData() adds this tag to all elements and returns `true`
+   */
+  protected def propagateOnMultiDataImpl(that: MultiData): Boolean = {
+    that.elements.foreach(_._2.addTag(this))
+    true
+  }
 }
 
 class DefaultTag(val that: BaseType) extends SpinalTag
